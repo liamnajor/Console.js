@@ -62,9 +62,8 @@ var console = {
         p = document.getElementById(""+c+"")
         var width = parseInt(p.style.width, 10)
         //console.log(width)
-        var lines = Math.ceil(window.availWidth/width)
-        p.cols = width/lines
-        p.rows = lines//math.ceil(width/163)
+        p.cols = 304/12
+        p.rows = width/304//math.ceil(width/163)
         c += 1
 }, clear: function(){
     cons.innerHTML = ""
