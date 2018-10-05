@@ -1,46 +1,71 @@
 var cons
 var o
 var c = 0
+var inputtext
+var div
+var inputCatchError = function(c){
+		if (c.key === 'Enter'){
+            if (inputtext.value != null){
+                try {
+                  eval(inputtext.value);
+                }
+                catch(error) {
+                  var string = error.stack.split("\n   ")
+                  console.log(""+string+"");
+                  // expected output: SyntaxError: unterminated string literal
+                  // Note - error messages will vary depending on browser
+                } {
+                  eval(inputtext.value);
+                }
+                
+            }
+        }
+}
 var console = {
     init:function(options){
     o = options
     cons = document.createElement("div")
     cons.id = "console"
     document.getElementsByTagName("body")[0].appendChild(cons)
+    
     cons =  document.getElementById( "console")
     cons.style.position = "absolute"
     cons.style.bottom = 0
     var input = document.createElement("textarea")
     input.rows = 1
     input.id = "input"
-    input.addEventListener('keydown', function(e){
-		if (e.key === 'Enter'){
-            if (input.value != null){
-                console.log(input.value)
-            }
-        }
-    })
+    input.addEventListener('keydown', function(e){inputCatchError(e)})
     cons.appendChild(input)
+    inputtext = document.getElementById("input")
     window.addEventListener('error', function(e){
-        
-        window.alert("TEMPORARY WORKAROUND: "+e.error.stack+"")
         errorstring = ""+e.error.stack+""
         console.vlog(errorstring, errorstring.length)
         })
         
 }, log: function(input){
     var e = ""+input+""
+    cons.removeChild(inputtext)
+    inputtext.value = ""
+    inputtext.addEventListener('keydown', function(e){inputCatchError(e)})
     console.vlog(input, e.length)
+    cons.appendChild(inputtext)
 }, vlog:function(input, width){
         var p = document.createElement("textarea")
         p.disabled = true
-        p.cols = width/2
-        p.rows = 2
+        p.cols = width
+        p.rows = 1
         p.id = c
         p.innerHTML += ""+input+""
         cons.appendChild(p)
         var br = document.createElement("br")
         cons.appendChild(br)
+        p = document.getElementById(""+c+"")
+        var width = parseInt(p.style.width, 10)
+        //console.log(width)
+        var lines = Math.ceil(window.availWidth/width)
+        p.cols = width/lines
+        p.rows = lines//math.ceil(width/163)
+        c += 1
 }, clear: function(){
     cons.innerHTML = ""
 }, assert: function(input){
