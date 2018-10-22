@@ -3,29 +3,28 @@ var o
 var c = 0
 var inputtext
 var div
+var hidebutton
 var inputCatchError = function(c){
 		if (c.key === 'Enter'){
-            if (inputtext.value != null){
+            if (inputtext.value != ""){
                 try {
                   eval(inputtext.value);
                 }
                 catch(error) {
                   var string = error.stack.split("\n   ")
                   console.log(""+string+"");
-                  // expected output: SyntaxError: unterminated string literal
-                  // Note - error messages will vary depending on browser
-                } {
-                  eval(inputtext.value);
-                }
-                
             }
         }
+        inputtext.value = ""
+}
 }
 var console = {
     init:function(options){
     o = options
     cons = document.createElement("div")
     cons.id = "console"
+    cons.style = "border: 1px solid; position: absolute; right: 0; top: 0; height: 105px;"
+    cons.style.display = "true"
     document.getElementsByTagName("body")[0].appendChild(cons)
     
     cons =  document.getElementById( "console")
@@ -37,6 +36,12 @@ var console = {
     input.addEventListener('keydown', function(e){inputCatchError(e)})
     cons.appendChild(input)
     inputtext = document.getElementById("input")
+    var button = document.createElement("input")
+    button.type ="button"
+    button.id = "inputhide"
+    button.value = "hide"
+    cons.appendChild(button)
+    hidebutton = document.getElementById("inputhide")
     window.addEventListener('error', function(e){
         errorstring = ""+e.error.stack+""
         console.vlog(errorstring, errorstring.length)
@@ -45,10 +50,16 @@ var console = {
 }, log: function(input){
     var e = ""+input+""
     cons.removeChild(inputtext)
+    cons.removeChild(hidebutton)
     inputtext.value = ""
     inputtext.addEventListener('keydown', function(e){inputCatchError(e)})
     console.vlog(input, e.length)
+    var s = c + 1
+    var pos = s * 64
+    inputtext.style = "position: relative; top: "+pos+";"
+    hidebutton.style = "position: relative; top: "+pos-20+";"
     cons.appendChild(inputtext)
+    cons.appendChild(hidebutton)
 }, vlog:function(input, width){
         var p = document.createElement("textarea")
         p.disabled = true
@@ -56,15 +67,28 @@ var console = {
         p.rows = 1
         p.id = c
         p.innerHTML += ""+input+""
+        var y = c + 1
+        p.style = "position: relative; top: "+y*64+";"
         cons.appendChild(p)
         var br = document.createElement("br")
+        br.id = ""+c+"b"
         cons.appendChild(br)
         p = document.getElementById(""+c+"")
         var width = parseInt(p.style.width, 10)
-        //console.log(width)
         p.cols = 304/12
-        p.rows = width/304//math.ceil(width/163)
+        p.rows = width/304
         c += 1
+        if (c === 3){
+             cons.removeChild(document.getElementById("0"));
+             cons.removeChild(document.getElementById("0b"));
+             document.getElementById("1").id = 0
+             document.getElementById("1b").id = "0b"
+             document.getElementById("0").style =  "position: relative; top: 64;"
+             document.getElementById("2").id = 1
+             document.getElementById("2b").id = "1b"
+             document.getElementById("1").style =  "position: relative; top: 128;"
+             c -= 1
+        }
 }, clear: function(){
     cons.innerHTML = ""
 }, assert: function(input){
@@ -76,7 +100,16 @@ catch(error) {
   console.log(""+error.stack+"", error)
 }
 }
-}/*
+}
+document.getElementById("inputhide").onclick = function(){
+	if(document.getElementById("console").style.display === "none"){
+	    document.getElementById("console").style.display = "true"
+    }
+	if(document.getElementById("console").style.display === "true"){
+	    document.getElementById("console").style.display = "none"
+    }
+}
+/*
 **assert()	Writes an error message to the console if the assertion is false
 *clear()	Clears the console
 count()	Logs the number of times that this particular call to count() has been called
