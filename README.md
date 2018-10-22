@@ -5,7 +5,7 @@ to use, simply add
 
 ```javascript
 
-<script src = "{path to console.js-master from your html}/init.js"></script>
+<script src = "{path to console.js-master from your html}/console.js"></script><script>console.init()</script>
 
 ```
 to your "index.html" (or whatever your html file is named)
