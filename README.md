@@ -1,5 +1,5 @@
 # Console.js
-A javascript dev console, modelled after the one for chrome, for mobile web development or whatever else you might need it for
+A javascript dev console, modelled after the one for chrome, for mobile web development (or whatever else you might need it for)
 
 to use, simply add
 
