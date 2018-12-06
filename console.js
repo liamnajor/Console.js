@@ -43,6 +43,7 @@ var console = {
     button.value = "hide"
     button.onclick = function(){
 	    document.getElementById("input").style.display = "none"
+        document.getElementById("inputshow").style.display = null
         cons.style.height = "25"
         cons.style.border = null
         document.getElementById("inputhide").style.display = "none"
@@ -60,11 +61,13 @@ var console = {
     button.type ="button"
     button.id = "inputshow"
     button.value = "show"
+    button.display = "none"
     button.onclick = function(){
 	    document.getElementById("input").style.display = null
         cons.style.height = "105"
         cons.style.border = "1px solid"
-        document.getElementById("inputhide").style.display = null
+        document.getElementById("inputhide").style.display = null 
+        document.getElementById("inputshow").style.display = "none"
         if(c >= 1){
             document.getElementById("0").style = "position: relative; top: 64;"
             document.getElementById("0b").style = null
@@ -75,6 +78,7 @@ var console = {
         }
     }   
     cons.appendChild(button)
+        document.getElementById("inputshow").style.display = "none"
     hidebutton = document.getElementById("inputhide")
     showbutton = document.getElementById("inputshow")
     window.addEventListener('error', function(e){
